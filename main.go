@@ -81,7 +81,6 @@ func writeActions(abi eos.ABI, pack, prefix string) error {
 		content += "				ActionData: eos.NewActionData(input),\n"
 		content += "			}\n\n"
 		content += "			api := getAPI()\n"
-		content += "			api.Debug = true\n"
 		content += "			if _, err := api.SignPushActions(action); err != nil {\n"
 		content += "				return err\n"
 		content += "			}\n\n"
