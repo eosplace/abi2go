@@ -76,7 +76,7 @@ func writeActions(abi eos.ABI, pack, prefix string) error {
 	content += "import (\n  eos \"github.com/eoscanada/eos-go\"\n)\n"
 
 	for _, ac := range abi.Actions {
-		content += "func Send" + toGoName(string(ac.Name)) + "(input " + toGoName(ac.Type) + ", account, permission string) error {\n"
+		content += "func Send" + toGoName(string(ac.Name)) + "(input " + toGoName(ac.Type) + ", account, permission string, api *eos.API) error {\n"
 		content += "			action := &eos.Action{\n"
 		content += "				Account: eos.AccountName(account),\n"
 		content += "				Name:    eos.ActionName(\"" + string(ac.Name) + "\"),\n"
@@ -85,7 +85,6 @@ func writeActions(abi eos.ABI, pack, prefix string) error {
 		content += "				},\n"
 		content += "				ActionData: eos.NewActionData(input),\n"
 		content += "			}\n\n"
-		content += "			api := getAPI()\n"
 		content += "			if _, err := api.SignPushActions(action); err != nil {\n"
 		content += "				return err\n"
 		content += "			}\n\n"
@@ -106,8 +105,7 @@ func writeQueryTables(abi eos.ABI, pack, prefix string) error {
 	content += "import (\n\"fmt\"\n\"encoding/json\"\n eos \"github.com/eoscanada/eos-go\"\n)\n\n"
 
 	for _, ac := range abi.Tables {
-		content += "func List" + toGoName(string(ac.Name)) + "(code, scope string) ([]" + toGoName(string(ac.Name)) + ", error)   {\n"
-		content += "    api := getAPI()\n"
+		content += "func List" + toGoName(string(ac.Name)) + "(code, scope string,api *eos.API) ([]" + toGoName(string(ac.Name)) + ", error)   {\n"
 		content += "    api.Debug = true\n"
 		content += "    var offset int\n"
 		content += "    ret := []" + toGoName(string(ac.Name)) + "{}\n\n"
